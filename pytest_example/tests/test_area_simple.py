@@ -1,0 +1,23 @@
+import numpy as np
+import pytest
+from area import circle_area
+
+
+##########################################################################################################
+# En enkel måte å skrive tester, men kan bli tungvintå bruke pytest.mark.parametrize for større eksempler
+##########################################################################################################
+
+@pytest.mark.parametrize(
+    "radius",
+    [
+        1,
+        2,
+        0.5,
+    ],
+)
+def test_circle_area_simple(radius):
+    """Area of circle should be pi * r^2."""
+    expected = np.pi * radius**2
+    assert np.allclose(circle_area(radius), expected), (
+        f"circle_area failed for radius={radius}"
+    )

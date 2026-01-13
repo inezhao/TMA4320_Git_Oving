@@ -65,6 +65,7 @@ nothing to commit, working tree clean
 git status
 git diff
 ```
+Merk at du kan også se endringene i GitHub Desktop.
 
 ### Legg til endringen og commit
 ```bash
@@ -75,6 +76,7 @@ git add studenter.txt
 # `-m` flagget lar deg legge til en commit-melding direkte i kommandoen
 git commit -m "La til mitt navn i studentlisten"
 ```
+Merk at du kan også adde og committe i GitHub Desktop.
 
 ### Push til GitHub
 For å sende endringen til GitHub, gå til GitHub Desktop og trykk på "Push origin" knappen øverst.
@@ -90,20 +92,12 @@ Branches lar deg jobbe på nye features uten å ødelegge hovedkoden.
 
 ### Lag en ny branch
 ```bash
-git branch min-feature      # Lag en ny branch kalt "min-feature"
-git switch min-feature      # Bytt fra "main" branch til den nye branchen
+git branch update-students      # Lag en ny branch kalt "update-students"
+git switch update-students      # Bytt fra "main" branch til den nye branchen
 ```
 
-### Oppgave: Bruk din teksteditor og gjør noen endringer i `kalkulator.py`
-
-For eksempel, legg til en ny funksjon:
-```python
-def multipliser(a, b):
-    return a * b
-```
-
-
-### Sjekk hva som er endret
+### Bruk din teksteditor og legg til en ny student i `studenter.txt`
+Legg til enda en ny student i `studenter.txt` og lagre filen.  Sjekk hva som er endret
 ```bash
 git status 
 git diff
@@ -111,15 +105,15 @@ git diff
 
 ### Commit endringene
 ```bash
-git add kalkulator.py
-git commit -m "La til multiplikasjonsfunksjon"
+git add studenter.txt
+git commit -m "La til en ny student i studentlisten"
 ```
 
 ### Merge branchen tilbake til main (lokalt)
-Nå som du har gjort endringer på `min-feature`-branchen, kan du merge den tilbake til `main`:
+Nå som du har gjort endringer på `update-students`-branchen, kan du merge den tilbake til `main`:
 ```bash
-git switch main                 # Bytt tilbake til main-branchen
-git merge min-feature           # Merge inn endringene fra min-feature
+git switch main                         # Bytt tilbake til main-branchen. Her er ikke endringene dine enda.
+git merge update-students               # Merge inn endringene fra update-students
 ```
 Du har nå laget en branch, gjort endringer, og merget dem tilbake til main. Bruk `git log` for å se commit-historikken. Deretter pusher du endringene til GitHub via GitHub Desktop på samme måte som tidligere.
 
@@ -136,19 +130,30 @@ https://www.youtube.com/watch?v=DloR0BOGNU0
 Nå som du har lært å jobbe med branches lokalt, skal vi se hvordan du bruke egne branches på GitHub. Dette kan være nytting når dere skal samarbeide på prosjektet.
 
 ### Push en branch til GitHub
-La oss først lage en ny branch med noen endringer som vi kan pushe:
+La oss først lage enda en ny branch med noen endringer som vi kan pushe:
 ```bash
-git branch github-test          # Lag en ny branch
-git switch github-test          # Bytt til den nye branchen
+git branch fix-area      # Lag en ny branch kalt "fix-area"
+git switch fix-area      # Bytt fra "main" branch til den nye branchen
 ```
 
-Gjør en liten endring i `kalkulator.py` (f.eks. legg til en kommentar eller en ny funksjon), og commit:
-```bash
-git add kalkulator.py
-git commit -m "Test av GitHub branch"
-```
+### Bruk din teksteditor og fiks beregningen av arealet i `area.py`
 
-Går vi nå inn på GitHub Desktop, vil vi se at det er en ny branch som ikke er pushet enda. Trykk på "Publish branch" for å sende branchen til GitHub.
+Nåværende funksjon for å beregnige arealet av en sirkel er feil.
+```python
+def circle_area(radius: np.ndarray) -> np.ndarray:
+    """Calculate the area of a circle given its radius."""
+    return np.pi * radius
+```
+Fiks funksjonen til å korrekt bruke formelen $A = πr^2$. Funksjonen skal returnere `np.pi * radius ** 2`. Ikke bekymre deg dersom VSCode advarer om at `np` ikke er tilgjenglig (dette er ikke relevant for denne øvingen).
+
+### Commit endringene dine i branchen
+```bash
+git add area.py
+git commit -m "Fikset beregning av sirkelareal"
+```
+### Push branchen til GitHub
+
+I stedet for å merge branchen til main lokalt, skal vi pushe branchen til GitHub slik at vi kan lage en Pull Request derfra.  Går vi nå inn på GitHub Desktop, vil vi se at det er en ny branch som ikke er pushet enda. Trykk på "Publish branch" for å sende branchen til GitHub.
 
 <img src="figures/publish_branch.png" width="100%" height="100%">
 
@@ -171,8 +176,22 @@ For å hente de nyeste endringene fra GitHub til din lokale main-branch, bytt f�
 git switch main
 ```
 Deretter velger du "Fetch origin" i GitHub Desktop for å hente de nyeste endringene fra GitHub.
+<img src="figures/fetch_origin.png" width="100%" height="100%">
 
-## Del 5: Bruk av .gitignore
+## Del 5: Pull request til originalrepoet
+
+På tilsvarende måte som du laget en Pull Request til ditt eget repo, kan du lage en Pull Request til originalrepoet (det du klonet fra). Inne på GitHub-siden til ditt forkede repo, trykk på "Contribute" og deretter "Open pull request".
+
+<img src="figures/open_pr.png" width="60%" height="60%">
+
+Dette er en forespørsel om å merge endringene dine inn i originalrepoet. Skriv en kort beskrivelse av endringene du har gjort, og trykk på "Create pull request".
+
+
+<img src="figures/open_pr_2.png" width="80%" height="80%">
+
+Forespørselen vil nå bli vurdert av eieren av originalrepoet (i dette tilfellet meg). Dersom endringene dine er gode, vil de bli merget inn i originalrepoet.
+
+## Del 6: Bruk av .gitignore
 
 Noen filer skal ikke være med i Git, for eksempel store datafiler, midlertidige filer, eller autogenererte filer. Filen `.gitignore` forteller Git hvilke filer og mapper som skal ignoreres.
 
